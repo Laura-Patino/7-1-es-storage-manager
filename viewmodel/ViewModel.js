@@ -64,11 +64,12 @@ export class ViewModel {
         try {
             //Richiesta di DETAILS di un menu: mid, name, price, location, imageVersion, shortDescription, deliveryTime, longDescription
             const menuFromServer = await CommunicationController.getMenuDetails(mid, this.sid);
-            const menuFromDB = await this.db.getMenuByMid(menuFromServer.mid); // se non esite nel db -> return null
+            const menuFromDB = await this.db.getMenuByMid(menuFromServer.mid); 
+            // se non esite nel db -> return null, altrimenti menuFromDB = { mid, imageVersion e image }
 
-            if (menuFromDB) {  //altrimenti menuFromDB = { mid, imageVersion e image }
+            if (menuFromDB) {  
                 //se esiste il menu nel db
-                console.log("Menu esiste nel db", menuFromDB);
+                console.log("Menu esiste nel db...");//, menuFromDB);
 
                 if (menuFromDB.imageVersion === menuFromServer.imageVersion) {
                     //se le versioni sono uguali, restituisco il menu dal db
