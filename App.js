@@ -9,13 +9,13 @@ export default function App() {
   const [sessionUser, setSessionUser] = useState(null); 
   const [textToShow, setTextToShow] = useState("Caricamento...");
   const [menuData, setMenuData] = useState(null);
-  //const logicViewModel = new ViewModel();
 
   init = async () => {
     try {
-      const logicViewModel = new ViewModel();
-      await logicViewModel.initializeApp();
-      setSessionUser(logicViewModel);
+      //const logicViewModel = new ViewModel();
+      const res = await ViewModel.getUserSession();
+      console.log("Session User", res);
+      setSessionUser(res);
       //console.log("Session User", sessionUser); 
       //continua ancora a stampare null, nonostante sia stato settato, perchè è async e non è ancora stato completato
       //se invece lo uso esternamente a init, funziona, in quanto è stato completato
@@ -28,10 +28,10 @@ export default function App() {
 
   fetchMenuDetails = async () => {
     try {
-      const menuDetails = await sessionUser.fetchMenuData(49);
+      const menuDetails = await ViewModel.fetchMenuData(49);
       setMenuData(menuDetails)
     } catch (err) {
-      console.error("Erroe nel caricamento Menu Data:", err);
+      console.error("Erroe nel caricamento Menu Data:", err); 
     }
   }
 
@@ -43,7 +43,9 @@ export default function App() {
       if (sessionUser) {
         //console.log("useEffect info:", sessionUser);
         //await sessionUser.info(); //ora posso richimare i metodi della classe ViewModel con sessionUser
+        
         await fetchMenuDetails();
+        
       }
     };
     initializeAndFetch();
